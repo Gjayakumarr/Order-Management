@@ -1,0 +1,97 @@
+/* Header styling */
+.global-header {
+  background-color: #1f2937; /* dark slate gray */
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Home icon */
+.global-header-left {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.global-header-left:hover {
+  color: #60a5fa; /* soft blue */
+}
+
+/* Right-side button container */
+.global-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Buttons */
+.global-header-right button {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  background-color: transparent;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.global-header-right button i {
+  font-size: 1.1rem;
+  margin-right: 0.4rem;
+}
+
+/* Change Password button */
+.global-header-right button.btn-change-password {
+  background-color: #374151;
+}
+
+.global-header-right button.btn-change-password:hover {
+  background-color: #4b5563;
+}
+
+/* Logout button */
+.global-header-right button.btn-logout {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.global-header-right button.btn-logout:hover {
+  background-color: #dc2626;
+}
+
+/* Main content area */
+.app-content {
+  padding: 2rem;
+  min-height: calc(100vh - 64px);
+  background-color: #f3f4f6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+  .global-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .global-header-right {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .global-header-right button {
+    width: 100%;
+  }
+}

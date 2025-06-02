@@ -1,0 +1,81 @@
+/* Count Cards */
+.count-card {
+  height: 110px;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.count-card:hover {
+  transform: translateY(-3px);
+}
+
+.count-card .card-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.count-card .card-text {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Product Section */
+.product-section {
+  background-color: #f1f3f5;
+  padding: 2rem 1rem;
+  border-radius: 1rem;
+}
+
+/* Product Cards */
+.product-card {
+  border-radius: 1rem;
+  transition: box-shadow 0.3s ease;
+  border: none;
+}
+
+.product-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+.product-card img {
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.product-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+  text-align: center;
+  padding: 1rem;
+}
+
+.product-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #343a40;
+}
+
+.product-card .card-text {
+  font-size: 0.95rem;
+  color: #495057;
+  margin-bottom: 0.4rem;
+}
+
+.product-card .d-flex {
+  margin-top: 0.5rem;
+}
+
+.product-card .btn {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+}
+
