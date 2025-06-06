@@ -5,6 +5,8 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,8 +16,6 @@ import org.springframework.cloud.netflix.eureka.server.event.EurekaRegistryAvail
 import org.springframework.context.event.EventListener;
 
 import org.springframework.core.env.Environment;
-
-import jakarta.annotation.PostConstruct;
 
 @EnableEurekaServer
 @SpringBootApplication
