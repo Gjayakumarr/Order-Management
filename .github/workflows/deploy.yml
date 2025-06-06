@@ -1,0 +1,57 @@
+name: Microservice CI/CD with PM2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'eureka/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+
+      - name: Detect Changed Services
+        id: changed
+        run: |
+          git fetch origin main --depth=1
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | cut -d/ -f1 | sort -u | uniq)
+          echo "changed_services=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Build and Deploy via PM2
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key
+          chmod 600 private_key
+
+          for service in ${{ steps.changed.outputs.changed_services }}; do
+            if [[ "$service" =~ ^(eureka|gateway)$ ]]; then
+              echo "Building and deploying $service..."
+
+              # Build JAR
+              cd $service
+              mvn clean package -DskipTests
+              cd ..
+
+              # Rename and copy the JAR to remote server
+              scp -i private_key -o StrictHostKeyChecking=no $service/target/*.jar \
+                jayakumar@172.26.142.87:/home/jayakumar/jenkins_projects/ordermanagement/$service/$service.jar
+
+              # Restart the service using PM2 name
+              ssh -i private_key -o StrictHostKeyChecking=no jayakumar@172.26.142.87 << EOF
+                pm2 restart $service || pm2 start java --name "$service" -- -jar /home/jayakumar/jenkins_projects/ordermanagement/$service/$service.jar
+                pm2 save
+              EOF
+            fi
+          done
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
