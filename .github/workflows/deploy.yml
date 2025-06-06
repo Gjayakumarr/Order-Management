@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'eureka/**'
+      - 'gateway/**'
 
 jobs:
   deploy:
@@ -29,28 +30,33 @@ jobs:
           echo "changed_services=$CHANGED" >> $GITHUB_OUTPUT
 
       - name: Build and Deploy via PM2
+        shell: bash
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
 
-          for service in ${{ steps.changed.outputs.changed_services }}; do
+          # IMPORTANT: Use double quotes and eval to expand GitHub output properly in bash
+          SERVICES="${{ steps.changed.outputs.changed_services }}"
+          echo "Changed services detected: $SERVICES"
+
+          for service in $SERVICES; do
             if [[ "$service" =~ ^(eureka|gateway)$ ]]; then
               echo "Building and deploying $service..."
 
               # Build JAR
-              cd $service
+              cd "$service"
               mvn clean package -DskipTests
               cd ..
 
-              # Rename and copy the JAR to remote server
-              scp -i private_key -o StrictHostKeyChecking=no $service/target/*.jar \
-                jayakumar@172.26.142.87:/home/jayakumar/jenkins_projects/ordermanagement/$service/$service.jar
+              # Copy the JAR to remote server
+              scp -i private_key -o StrictHostKeyChecking=no "$service"/target/*.jar \
+                jayakumar@172.26.142.87:/home/jayakumar/jenkins_projects/ordermanagement/"$service"/"$service".jar
 
-              # Restart the service using PM2 name
-              ssh -i private_key -o StrictHostKeyChecking=no jayakumar@172.26.142.87 << EOF
-                pm2 restart $service
-                pm2 save
-              EOF
+              # Restart the service using PM2 name on remote server
+              ssh -i private_key -o StrictHostKeyChecking=no jayakumar@172.26.142.87 <<EOF
+pm2 restart $service
+pm2 save
+EOF
             fi
           done
         env:
