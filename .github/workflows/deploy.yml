@@ -48,7 +48,7 @@ jobs:
 
               # Restart the service using PM2 name
               ssh -i private_key -o StrictHostKeyChecking=no jayakumar@172.26.142.87 << EOF
-                pm2 restart $service || pm2 start java --name "$service" -- -jar /home/jayakumar/jenkins_projects/ordermanagement/$service/$service.jar
+                pm2 restart $service
                 pm2 save
               EOF
             fi
